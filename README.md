@@ -8,7 +8,7 @@
 > database persistance  
 
 # Tech:  
-> Android Studio
-> Kotlin
-> android Jetpack library
-> Room Database
+> Android Studio  
+> Kotlin  
+> android Jetpack library  
+> Room Database  
