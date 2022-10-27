@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">newsApss</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_news_toolbar">News</string>
+    <string name="tv_alert">Pencarian berita tidak ditemukan :(</string>
+    <string name="iv_image_of_text_allert">image of text allert</string>
+    <string name="iv_imaga_of_list_news">imaga of list news</string>
+    <string name="iv_image_of_news">image of news</string>
+    <string name="iv_image_alert">image alert</string>
 </resources>
