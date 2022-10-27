@@ -47,7 +47,8 @@
         app:layout_constraintTop_toBottomOf="@id/pb_top"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed"
-        app:tint="@android:color/darker_gray" />
+        app:tint="@android:color/darker_gray"
+        android:contentDescription="@string/iv_image_of_text_allert" />
     <TextView
         android:id="@+id/text_alert"
         android:layout_width="wrap_content"
