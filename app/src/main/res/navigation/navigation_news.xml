@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.gundermac.newsapss.ui.HomeFragment"
+        android:name="com.gundermac.newsapss.ui.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_bookmark"
-        android:name="com.gundermac.newsapss.ui.BookmarkFragment"
+        android:name="com.gundermac.newsapss.ui.fragment.BookmarkFragment"
         android:label="fragment_bookmark"
         tools:layout="@layout/fragment_bookmark" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.gundermac.newsapss.ui
+package com.gundermac.newsapss.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

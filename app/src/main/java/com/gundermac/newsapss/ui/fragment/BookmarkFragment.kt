@@ -1,4 +1,4 @@
-package com.gundermac.newsapss.ui
+package com.gundermac.newsapss.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
