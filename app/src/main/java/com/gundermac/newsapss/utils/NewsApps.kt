@@ -2,8 +2,7 @@ package com.gundermac.newsapss.utils
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.gundermac.newsapss.core.di.networkModule
-import com.gundermac.newsapss.core.di.repositoryModule
+import com.gundermac.newsapss.core.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +16,7 @@ class NewsApps : Application() {
         startKoin {
             androidLogger()
             androidContext(this@NewsApps)
-            modules(networkModule, repositoryModule)
+            modules(networkModule, repositoryModule, viewModelMode, homeModule, bookmarkModule)
         }
     }
 }
