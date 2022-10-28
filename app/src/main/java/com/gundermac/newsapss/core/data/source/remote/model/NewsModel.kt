@@ -1,6 +1,4 @@
-package com.gundermac.newsapss
-
-import java.net.IDN
+package com.gundermac.newsapss.core.data.source.remote.model
 
 data class NewsModel(
     val status: String,
@@ -9,7 +7,7 @@ data class NewsModel(
 )
 
 data class ArticleModel(
-    val source:SourceModel?,
+    val source: SourceModel?,
     val author:String?,
     val title:String,
     val description:String?,
