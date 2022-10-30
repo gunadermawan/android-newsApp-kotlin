@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.gundermac.newsapss.core.data.source.remote.model.ArticleModel
 import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
@@ -31,10 +30,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        data binding
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
         bindingToolbar.title = viewModel.title
+
         binding.rvCategory.adapter = categoryAdapter
         viewModel.category.observe(viewLifecycleOwner) {
             Timber.i(it)
+            viewModel.fetch()
         }
         binding.rvListNews.adapter = newsAdapter
         viewModel.news.observe(viewLifecycleOwner) {
