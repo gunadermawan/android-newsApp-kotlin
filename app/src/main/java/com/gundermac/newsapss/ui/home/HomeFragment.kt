@@ -1,17 +1,17 @@
 package com.gundermac.newsapss.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
 import com.gundermac.newsapss.databinding.CustomToolbarBinding
 import com.gundermac.newsapss.databinding.FragmentHomeBinding
 import com.gundermac.newsapss.ui.adapter.CategoryAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.Locale.Category
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -19,7 +19,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModel<HomeViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -31,13 +31,23 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindingToolbar.textViewTitleToolbar.text = viewModel.title
         binding.rvCategory.adapter = categoryAdapter
+        viewModel.category.observe(viewLifecycleOwner) {
+            Timber.i(it)
+        }
+        viewModel.news.observe(viewLifecycleOwner) {
+            Timber.i(it.articles.toString())
+        }
+        viewModel.message.observe(viewLifecycleOwner) { it ->
+            it.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private val categoryAdapter by lazy {
         CategoryAdapter(viewModel.categories, object : CategoryAdapter.OnAdapterListener {
             override fun onClick(category: CategoryModel) {
-                Timber.i(category.id)
-
+                viewModel.category.postValue(category.id)
             }
 
         })
