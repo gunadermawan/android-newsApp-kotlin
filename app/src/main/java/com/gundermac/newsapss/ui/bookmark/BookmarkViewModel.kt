@@ -5,4 +5,5 @@ import com.gundermac.newsapss.core.data.repository.NewsRepository
 
 class BookmarkViewModel(val repository: NewsRepository) : ViewModel() {
     val title = "saved"
+    val articles = repository.db.findAll()
 }
