@@ -8,7 +8,7 @@ import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
 import com.gundermac.newsapss.core.data.source.remote.model.NewsModel
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val repository: NewsRepository) : ViewModel() {
+class HomeViewModel(private val repository: NewsRepository) : ViewModel() {
     val title = "news"
 
     val category by lazy {

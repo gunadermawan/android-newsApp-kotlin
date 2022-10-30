@@ -18,7 +18,7 @@ import timber.log.Timber
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var bindingToolbar: CustomToolbarBinding
-    private val viewModel: HomeViewModel by viewModel<HomeViewModel>()
+    private val viewModel: HomeViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindingToolbar.textViewTitleToolbar.text = viewModel.title
+        bindingToolbar.title = viewModel.title
         binding.rvCategory.adapter = categoryAdapter
         viewModel.category.observe(viewLifecycleOwner) {
             Timber.i(it)
@@ -45,10 +45,8 @@ class HomeFragment : Fragment() {
                 if (it.articles.isEmpty()) View.VISIBLE else View.GONE
             newsAdapter.add(it.articles)
         }
-        viewModel.message.observe(viewLifecycleOwner) { it ->
-            it.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }
+        viewModel.message.observe(viewLifecycleOwner) {
+
         }
     }
 
@@ -61,7 +59,7 @@ class HomeFragment : Fragment() {
     }
     private val newsAdapter by lazy {
         NewsAdapter(arrayListOf(), object : NewsAdapter.OnAdapterListener {
-            override fun onClick(articleModel: ArticleModel) {
+            override fun onClick(article: ArticleModel) {
             }
         })
     }
