@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import com.gundermac.newsapss.R
 import com.gundermac.newsapss.core.data.source.remote.model.ArticleModel
 import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
 import com.gundermac.newsapss.databinding.CustomToolbarBinding
@@ -35,12 +37,30 @@ class HomeFragment : Fragment() {
 //        data binding
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        bindingToolbar.container.inflateMenu(R.menu.menu_search)
         bindingToolbar.title = viewModel.title
+
+        val menu = binding.toolbar.container.menu
+        val search = menu.findItem(R.id.action_search)
+        val searchView = search.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                firstLoad()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { viewModel.query = it }
+                return true
+            }
+
+        })
 
         binding.rvCategory.adapter = categoryAdapter
         viewModel.category.observe(viewLifecycleOwner) {
-            Timber.i(it)
-            viewModel.fetch()
+            firstLoad()
         }
         binding.rvListNews.adapter = newsAdapter
         viewModel.news.observe(viewLifecycleOwner) {
@@ -54,6 +74,11 @@ class HomeFragment : Fragment() {
         viewModel.message.observe(viewLifecycleOwner) {
 
         }
+    }
+
+    private fun firstLoad() {
+        binding.nestedScrollView.scrollTo(0, 0)
+        viewModel.fetch()
     }
 
     private val categoryAdapter by lazy {
