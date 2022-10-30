@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.gundermac.newsapss.R
 import com.gundermac.newsapss.core.data.source.remote.model.ArticleModel
@@ -69,15 +70,23 @@ class HomeFragment : Fragment() {
                 if (it.articles.isEmpty()) View.VISIBLE else View.GONE
             binding.textAlert.visibility =
                 if (it.articles.isEmpty()) View.VISIBLE else View.GONE
+            if (viewModel.page == 1) newsAdapter.clear()
             newsAdapter.add(it.articles)
         }
         viewModel.message.observe(viewLifecycleOwner) {
 
         }
+        binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
+            if (scrollY == v.getChildAt(0)!!.measuredHeight - v.measuredHeight) {
+                if (viewModel.page <= viewModel.total && viewModel.loadingMore.value == false) viewModel.fetch()
+            }
+        }
     }
 
     private fun firstLoad() {
         binding.nestedScrollView.scrollTo(0, 0)
+        viewModel.page = 1
+        viewModel.total = 1
         viewModel.fetch()
     }
 

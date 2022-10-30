@@ -107,7 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="gone"
+            android:visibility="@{viewModel.loadingMore ? view.VISIBLE :view.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
