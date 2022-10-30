@@ -26,7 +26,7 @@
             android:maxLength="10"
             android:maxLines="1"
             android:text="@{title}"
-            android:textColor="@color/blue_500" />
+            android:textColor="@color/blue_100" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 </layout>
