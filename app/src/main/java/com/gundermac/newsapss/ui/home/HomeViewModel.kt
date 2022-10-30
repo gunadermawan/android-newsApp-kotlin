@@ -7,6 +7,7 @@ import com.gundermac.newsapss.core.data.repository.NewsRepository
 import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
 import com.gundermac.newsapss.core.data.source.remote.model.NewsModel
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
 
 class HomeViewModel(private val repository: NewsRepository) : ViewModel() {
     val title = "news"
@@ -20,6 +21,9 @@ class HomeViewModel(private val repository: NewsRepository) : ViewModel() {
     val loading by lazy {
         MutableLiveData<Boolean>()
     }
+    val loadingMore by lazy {
+        MutableLiveData<Boolean>()
+    }
     val news by lazy {
         MutableLiveData<NewsModel>()
     }
@@ -30,17 +34,25 @@ class HomeViewModel(private val repository: NewsRepository) : ViewModel() {
         fetch()
     }
 
+    var query = ""
+    var page = 1
+    var total = 1
+
     fun fetch() {
-        loading.value = true
+        if (page > 1) loadingMore.value = true else loading.value = true
         viewModelScope.launch {
             try {
                 val response = repository.fetchNews(
                     category.value!!,
-                    "",
-                    1
+                    query,
+                    page
                 )
                 news.value = response
+                val totalResult: Double = response.totalResults / 20.0
+                total = ceil(totalResult).toInt()
+                page++
                 loading.value = false
+                loadingMore.value = false
             } catch (e: Exception) {
                 message.value = "something went wrong"
             }

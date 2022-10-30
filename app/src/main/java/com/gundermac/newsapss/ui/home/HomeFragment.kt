@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import com.gundermac.newsapss.R
 import com.gundermac.newsapss.core.data.source.remote.model.ArticleModel
 import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
 import com.gundermac.newsapss.databinding.CustomToolbarBinding
@@ -35,12 +38,31 @@ class HomeFragment : Fragment() {
 //        data binding
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        bindingToolbar.container.inflateMenu(R.menu.menu_search)
         bindingToolbar.title = viewModel.title
+
+        val menu = binding.toolbar.container.menu
+        val search = menu.findItem(R.id.action_search)
+        val searchView = search.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                firstLoad()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { viewModel.query = it }
+                return true
+            }
+
+        })
 
         binding.rvCategory.adapter = categoryAdapter
         viewModel.category.observe(viewLifecycleOwner) {
-            Timber.i(it)
-            viewModel.fetch()
+            NewsAdapter.VIEW_TYPE = if (it!!.isEmpty()) 1 else 2
+            firstLoad()
         }
         binding.rvListNews.adapter = newsAdapter
         viewModel.news.observe(viewLifecycleOwner) {
@@ -49,11 +71,24 @@ class HomeFragment : Fragment() {
                 if (it.articles.isEmpty()) View.VISIBLE else View.GONE
             binding.textAlert.visibility =
                 if (it.articles.isEmpty()) View.VISIBLE else View.GONE
+            if (viewModel.page == 1) newsAdapter.clear()
             newsAdapter.add(it.articles)
         }
         viewModel.message.observe(viewLifecycleOwner) {
 
         }
+        binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
+            if (scrollY == v.getChildAt(0)!!.measuredHeight - v.measuredHeight) {
+                if (viewModel.page <= viewModel.total && viewModel.loadingMore.value == false) viewModel.fetch()
+            }
+        }
+    }
+
+    private fun firstLoad() {
+        binding.nestedScrollView.scrollTo(0, 0)
+        viewModel.page = 1
+        viewModel.total = 1
+        viewModel.fetch()
     }
 
     private val categoryAdapter by lazy {

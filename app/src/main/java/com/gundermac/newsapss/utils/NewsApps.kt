@@ -16,8 +16,14 @@ class NewsApps : Application() {
         startKoin {
             androidLogger()
             androidContext(this@NewsApps)
-            modules(networkModule, repositoryModule, viewModelMode, homeModule, bookmarkModule,
-                databaseModule)
+            modules(networkModule,
+                repositoryModule,
+                HomeViewModelModule,
+                homeModule,
+                bookmarkModule,
+                databaseModule,
+                detailModule,
+                DetailViewModelModule)
         }
     }
 }
