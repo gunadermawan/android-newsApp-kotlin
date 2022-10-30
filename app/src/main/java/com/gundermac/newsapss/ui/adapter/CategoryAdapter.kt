@@ -42,7 +42,7 @@ class CategoryAdapter(
 
     // to change color if category clicked
     private fun setColor(textView: TextView) {
-        items.forEach { it.setBackgroundResource(R.color.blue_500) }
+        items.forEach { it.setBackgroundResource(R.color.blue_100) }
         textView.setBackgroundResource(android.R.color.darker_gray)
     }
 
