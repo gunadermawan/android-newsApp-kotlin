@@ -8,7 +8,7 @@ import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
 import com.gundermac.newsapss.core.data.source.remote.model.NewsModel
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val repository: NewsRepository) : ViewModel() {
+class HomeViewModel(private val repository: NewsRepository) : ViewModel() {
     val title = "news"
 
     val category by lazy {
@@ -16,6 +16,9 @@ class HomeViewModel(val repository: NewsRepository) : ViewModel() {
     }
     val message by lazy {
         MutableLiveData<String>()
+    }
+    val loading by lazy {
+        MutableLiveData<Boolean>()
     }
     val news by lazy {
         MutableLiveData<NewsModel>()
@@ -27,15 +30,17 @@ class HomeViewModel(val repository: NewsRepository) : ViewModel() {
         fetch()
     }
 
-    private fun fetch() {
+    fun fetch() {
+        loading.value = true
         viewModelScope.launch {
             try {
                 val response = repository.fetchNews(
-                    "",
+                    category.value!!,
                     "",
                     1
                 )
                 news.value = response
+                loading.value = false
             } catch (e: Exception) {
                 message.value = "something went wrong"
             }

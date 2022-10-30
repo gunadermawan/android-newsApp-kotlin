@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.gundermac.newsapss.core.data.source.remote.model.ArticleModel
 import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
@@ -18,7 +17,7 @@ import timber.log.Timber
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var bindingToolbar: CustomToolbarBinding
-    private val viewModel: HomeViewModel by viewModel<HomeViewModel>()
+    private val viewModel: HomeViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -31,10 +30,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindingToolbar.textViewTitleToolbar.text = viewModel.title
+//        data binding
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+        bindingToolbar.title = viewModel.title
+
         binding.rvCategory.adapter = categoryAdapter
         viewModel.category.observe(viewLifecycleOwner) {
             Timber.i(it)
+            viewModel.fetch()
         }
         binding.rvListNews.adapter = newsAdapter
         viewModel.news.observe(viewLifecycleOwner) {
@@ -45,10 +49,8 @@ class HomeFragment : Fragment() {
                 if (it.articles.isEmpty()) View.VISIBLE else View.GONE
             newsAdapter.add(it.articles)
         }
-        viewModel.message.observe(viewLifecycleOwner) { it ->
-            it.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }
+        viewModel.message.observe(viewLifecycleOwner) {
+
         }
     }
 
@@ -61,7 +63,7 @@ class HomeFragment : Fragment() {
     }
     private val newsAdapter by lazy {
         NewsAdapter(arrayListOf(), object : NewsAdapter.OnAdapterListener {
-            override fun onClick(articleModel: ArticleModel) {
+            override fun onClick(article: ArticleModel) {
             }
         })
     }

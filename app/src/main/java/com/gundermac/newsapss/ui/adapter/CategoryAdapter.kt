@@ -14,9 +14,7 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     private val items = arrayListOf<TextView>()
 
-    class ViewHolder(val binding: AdapterCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-
-    }
+    class ViewHolder(val binding: AdapterCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
     interface OnAdapterListener {
         fun onClick(category: CategoryModel)

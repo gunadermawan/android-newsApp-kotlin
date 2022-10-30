@@ -10,9 +10,7 @@ class NewsAdapter(
     private val articles: ArrayList<ArticleModel>,
     private val listener: OnAdapterListener,
 ) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
-    class ViewHolder(val binding: AdapterNewsBinding) : RecyclerView.ViewHolder(binding.root) {
-
-    }
+    class ViewHolder(val binding: AdapterNewsBinding) : RecyclerView.ViewHolder(binding.root)
 
     interface OnAdapterListener {
         fun onClick(article: ArticleModel)
