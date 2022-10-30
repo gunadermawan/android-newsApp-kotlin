@@ -1,5 +1,6 @@
 package com.gundermac.newsapss.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.gundermac.newsapss.databinding.CustomToolbarBinding
 import com.gundermac.newsapss.databinding.FragmentHomeBinding
 import com.gundermac.newsapss.ui.adapter.CategoryAdapter
 import com.gundermac.newsapss.ui.adapter.NewsAdapter
+import com.gundermac.newsapss.ui.detail.DetailActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -64,6 +66,10 @@ class HomeFragment : Fragment() {
     private val newsAdapter by lazy {
         NewsAdapter(arrayListOf(), object : NewsAdapter.OnAdapterListener {
             override fun onClick(article: ArticleModel) {
+                startActivity(
+                    Intent(requireActivity(), DetailActivity::class.java)
+                        .putExtra("intent_detail_news", article)
+                )
             }
         })
     }
