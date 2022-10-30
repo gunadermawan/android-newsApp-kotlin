@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.gundermac.newsapss.core.data.source.remote.model.ArticleModel
 import com.gundermac.newsapss.core.data.source.remote.model.CategoryModel
 import com.gundermac.newsapss.databinding.CustomToolbarBinding
 import com.gundermac.newsapss.databinding.FragmentHomeBinding
 import com.gundermac.newsapss.ui.adapter.CategoryAdapter
+import com.gundermac.newsapss.ui.adapter.NewsAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -34,8 +36,14 @@ class HomeFragment : Fragment() {
         viewModel.category.observe(viewLifecycleOwner) {
             Timber.i(it)
         }
+        binding.rvListNews.adapter = newsAdapter
         viewModel.news.observe(viewLifecycleOwner) {
             Timber.i(it.articles.toString())
+            binding.imageviewTextAlert.visibility =
+                if (it.articles.isEmpty()) View.VISIBLE else View.GONE
+            binding.textAlert.visibility =
+                if (it.articles.isEmpty()) View.VISIBLE else View.GONE
+            newsAdapter.add(it.articles)
         }
         viewModel.message.observe(viewLifecycleOwner) { it ->
             it.let {
@@ -49,7 +57,12 @@ class HomeFragment : Fragment() {
             override fun onClick(category: CategoryModel) {
                 viewModel.category.postValue(category.id)
             }
-
+        })
+    }
+    private val newsAdapter by lazy {
+        NewsAdapter(arrayListOf(), object : NewsAdapter.OnAdapterListener {
+            override fun onClick(articleModel: ArticleModel) {
+            }
         })
     }
 }

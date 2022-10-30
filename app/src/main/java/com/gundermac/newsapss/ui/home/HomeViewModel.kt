@@ -27,7 +27,7 @@ class HomeViewModel(val repository: NewsRepository) : ViewModel() {
         fetch()
     }
 
-    fun fetch() {
+    private fun fetch() {
         viewModelScope.launch {
             try {
                 val response = repository.fetchNews(
